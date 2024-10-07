@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+</head>
+<body>
+    <a href="/main" class="title">KHR To Do List</a>
+
+    <form action="/login" method="post">
+        아이디 : <input type="text" name="id">
+        비밀번호 : <input type="password" name="pw">
+
+        <button type="submit">로그인</button>
+    </form>
+    <p th:text="${error}"></p>
+    <a href="/signup">회원가입</a>
+    
+    <a href="/user/idfind">아이디 찾기</a>
+    <a href="/user/pwfind">비밀번호 찾기</a>
+</body>
+</html>

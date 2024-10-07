@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        .error {
+            color: red;
+        }
+
+        .valid {
+            color: green;
+        }
+
+        .criteria {
+            margin-top: 10px;
+        }
+
+        .criteria span {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/main" class="title">KHR To Do List</a>
+
+    <form id="signup-form" action="/signup" method="post">
+        아이디 : <input type="text" name="id" required><br>
+        
+        비밀번호 : <input type="password" name="pw" id="pw" required><br>
+        <div class="criteria">
+            <span id="length" class="error">8자 이상이어야 합니다.</span>
+            <span id="alphabet" class="error">알파벳을 1개 이상 포함해야 합니다.</span>
+            <span id="special" class="error">특수문자를 1개 이상 포함해야 합니다.</span>
+            <span id="digit" class="error">숫자를 1개 이상 포함해야 합니다.</span>
+        </div>
+
+        이메일 : <input type="email" name="email" required><br>
+        
+        연락처 : <input type="text" name="phone" required><br>
+
+        <button type="submit">가입하기</button>
+    </form>
+    <a href="/login">로그인</a>
+
+    <script>
+        function validatePassword(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasDigit = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            const isValid = password.length >= minLength && (hasUpperCase || hasLowerCase) && hasSpecialChar && hasDigit;
+
+            document.getElementById('length').className = password.length >= minLength ? 'valid' : 'error';
+            document.getElementById('alphabet').className = (hasUpperCase || hasLowerCase) ? 'valid' : 'error';
+            document.getElementById('special').className = hasSpecialChar ? 'valid' : 'error';
+            document.getElementById('digit').className = hasDigit ? 'valid' : 'error';
+
+            return isValid;
+        }
+
+        document.getElementById('pw').addEventListener('input', function () {
+            const password = this.value;
+            validatePassword(password);
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', function (event) {
+            const password = document.getElementById('pw').value;
+
+            if (!validatePassword(password)) {
+                event.preventDefault(); // 폼 제출 방지
+                alert('비밀번호 조건을 충족해야 합니다.');
+            }
+        });
+
+        
+    </script>
+</body>
+
+</html>

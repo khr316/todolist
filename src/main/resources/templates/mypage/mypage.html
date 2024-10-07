@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+</head>
+
+<body>
+    <h1>마이페이지</h1>
+    <a href="/main">KHR To Do List</a>
+
+    <div th:each="info : ${infoList}">
+        <button type="button" th:onclick="delid('[[${info.seq}]]')">탈퇴하기</button>
+
+        <p th:text="${info.id}"></p>
+
+        <!-- 비밀번호 수정 -->
+        <p th:text="${#strings.repeat('*', #strings.length(info.pw))}" th:id="'pw-'+${info.seq}"></p>
+        <div th:id="'pw-edit-'+${info.seq}" style="display:none;">
+            <input type="text" th:id="'pw-input-'+${info.seq}" th:value="${info.pw}" />
+            <button type="button" th:onclick="savepw('[[${info.seq}]]')">저장</button>
+            <button type="button" th:onclick="cancelpw('[[${info.seq}]]')">취소</button>
+        </div>
+        <button type="button" th:onclick="editpw('[[${info.seq}]]')">확인 및 수정</button>
+
+        <!-- 이메일 수정 -->
+        <p th:text="${info.email}" th:id="'email-'+${info.seq}"></p>
+        <div th:id="'email-edit-'+${info.seq}" style="display:none;">
+            <input type="email" th:id="'email-input-'+${info.seq}" placeholder="새 이메일 입력" />
+            <button type="button" th:onclick="saveem('[[${info.seq}]]')">저장</button>
+            <button type="button" th:onclick="cancelem('[[${info.seq}]]')">취소</button>
+        </div>
+        <button type="button" th:onclick="editem('[[${info.seq}]]')">수정</button>
+
+        <!-- 전화번호 수정 -->
+        <p th:text="${info.phone}" th:id="'phone-'+${info.seq}"></p>
+        <div th:id="'phone-edit-'+${info.seq}" style="display:none;">
+            <input type="text" th:id="'phone-input-'+${info.seq}" placeholder="새 전화번호 입력" />
+            <button type="button" th:onclick="saveph('[[${info.seq}]]')">저장</button>
+            <button type="button" th:onclick="cancelph('[[${info.seq}]]')">취소</button>
+        </div>
+        <button type="button" th:onclick="editph('[[${info.seq}]]')">수정</button>
+
+    </div>
+
+</body>
+
+<script>
+    function delid(seq) {
+        location.href = "/user/del?seq=" + seq;
+    }
+
+    function editpw(seq) {
+        document.getElementById("pw-edit-" + seq).style.display = "block";
+    }
+
+    function savepw(seq) {
+        const newPw = document.getElementById("pw-input-" + seq).value;
+        // 비밀번호 저장 로직 추가 (서버로 전송)
+        location.href = "/user/editpw?seq=" + seq + "&pw=" + encodeURIComponent(newPw);
+    }
+
+    function cancelpw(seq) {
+        document.getElementById("pw-edit-" + seq).style.display = "none";
+    }
+
+    function editem(seq) {
+        document.getElementById("email-edit-" + seq).style.display = "block";
+    }
+
+    function saveem(seq) {
+        const newEmail = document.getElementById("email-input-" + seq).value;
+        // 이메일 저장 로직 추가 (서버로 전송)
+        location.href = "/user/editem?seq=" + seq + "&email=" + encodeURIComponent(newEmail);
+    }
+
+    function cancelem(seq) {
+        document.getElementById("email-edit-" + seq).style.display = "none";
+    }
+
+    function editph(seq) {
+        document.getElementById("phone-edit-" + seq).style.display = "block";
+    }
+
+    function saveph(seq) {
+        const newPhone = document.getElementById("phone-input-" + seq).value;
+        // 전화번호 저장 로직 추가 (서버로 전송)
+        location.href = "/user/editph?seq=" + seq + "&phone=" + encodeURIComponent(newPhone);
+    }
+
+    function cancelph(seq) {
+        document.getElementById("phone-edit-" + seq).style.display = "none";
+    }
+</script>
+
+</html>

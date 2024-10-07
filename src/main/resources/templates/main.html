@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List - KHR</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+
+<body>
+    <header>
+        <h1>KHR To Do List</h1>
+        <nav>
+            <ul>
+                <li><a href="/login" class="nav-link" th:if="${user} == 'not'">로그인</a></li>
+                <li><a href="/signup" class="nav-link" th:if="${user} == 'not'">회원가입</a></li>
+                <li><a href="/mypage" class="nav-link" th:if="${user} == 'login'">마이페이지</a></li>
+                <li><a href="/logout" class="nav-link" th:if="${user} == 'login'">로그아웃</a></li>
+                <li><a href="/list/insert" class="nav-link">등록</a></li>
+                <li><a href="/list/month" class="nav-link">달력보기</a></li>
+                <li><a href="/list/day" class="nav-link">오늘의 할 일</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="info">
+            <h2>사이트 이용 방법</h2>
+            <p>이 사이트에서 할 일을 등록하고 효율적으로 관리하세요. 상단 메뉴바에서 '등록'을 클릭하여 새로운 할 일을 추가하고,
+                '달력보기'를 통해 일정을 시각적으로 확인할 수 있습니다. '오늘의 할 일'에서는 오늘의 할 일 목록을 한눈에 볼 수 있습니다.</p>
+        </section>
+
+        <section class="image">
+            <img src="https://media.istockphoto.com/id/1492645918/ko/%EC%82%AC%EC%A7%84/%EC%84%A4%EB%AC%B8-%EC%A1%B0%EC%82%AC-%EC%96%91%EC%8B%9D-%EA%B0%9C%EB%85%90%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%85%B8%ED%8A%B8%EB%B6%81%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EC%82%AC%EC%97%85%EA%B0%80%EB%8A%94-%EC%98%A8%EB%9D%BC%EC%9D%B8-%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%84%A4%EB%AC%B8-%EC%A1%B0%EC%82%AC-%ED%99%95%EC%9D%B8%EB%9E%80%EC%9D%B4-%EC%9E%88%EB%8A%94-%EC%84%A4%EB%AC%B8%EC%A7%80-%EC%98%A8%EB%9D%BC%EC%9D%B8-%EC%84%A4%EB%AC%B8-%EC%A1%B0%EC%82%AC-%EC%96%91%EC%8B%9D-%EC%B1%84%EC%9A%B0%EA%B8%B0-%EB%B0%8F-%EB%8B%B5%EB%B3%80-%EC%A7%88%EB%AC%B8-%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%88%98%ED%96%89%ED%95%A9%EB%8B%88%EB%8B%A4-%EA%B3%A0%EA%B0%9D.jpg?s=1024x1024&w=is&k=20&c=UXHzujPbwJHit2cfKmFg_iAlrOtSGIO1yQWZtxk3nY0=" alt="To Do List">
+        </section>
+    </main>
+</body>
+
+</html>

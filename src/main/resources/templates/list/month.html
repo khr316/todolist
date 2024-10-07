@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>달력</title>
+    <style>
+        /* 기본적인 페이지 스타일 설정 */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        /* 페이지 제목 스타일 */
+        .title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #8BC34A;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* 달력 컨테이너 스타일 */
+        .calendar {
+            width: 500px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 달력 헤더(제목과 월 변경 버튼) 스타일 */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #8BC34A;
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .calendar-header h2 {
+            margin: 0;
+        }
+
+        /* 달력 헤더의 버튼 스타일 */
+        .calendar-header button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50%;
+            padding: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .calendar-header button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 달력 본문 스타일 */
+        .calendar-body {
+            padding: 20px;
+        }
+
+        /* 요일 이름 스타일 (일~토) */
+        .day-names {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #8BC34A;
+        }
+
+        /* 날짜들을 표시할 그리드 스타일 */
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            /* 고정된 6개의 줄로 설정 */
+            min-height: 300px;
+            /* 달력의 고정 높이 설정 */
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* 각 날짜 셀의 스타일 */
+        .day {
+            padding: 15px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .day:hover {
+            background-color: #c8e6c9;
+            color: white;
+        }
+
+        /* 오늘 날짜의 스타일 */
+        .day.current {
+            background-color: #8BC34A;
+            color: white;
+            border: 2px solid #558B2F;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* today 버튼 스타일 */
+        .today-button {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .today-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #8BC34A;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .today-button button:hover {
+            background-color: #558B2F;
+        }
+
+        /* 뒤로가기 버튼 스타일 */
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 페이지 제목 -->
+    <a href="/main" class="title">KHR To Do List</a>
+
+    <!-- 달력 컴포넌트 -->
+    <div class="calendar">
+        <!-- 달력 헤더: 월/연도 표시 및 이전/다음 버튼 -->
+        <div class="calendar-header">
+            <button onclick="prevMonth()">&lt;</button>
+            <h2 id="monthYear"></h2>
+            <button onclick="nextMonth()">&gt;</button>
+        </div>
+
+        <!-- 현재 날짜 버튼 -->
+        <div class="today-button">
+            <button onclick="goToToday()">Today</button>
+        </div>
+
+        <!-- 달력 본문: 요일과 날짜 표시 -->
+        <div class="calendar-body">
+            <!-- 요일 이름 표시 -->
+            <div class="day-names">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <!-- 날짜들이 표시될 영역 -->
+            <div class="days" id="days">
+                <!-- JavaScript가 날짜를 이 영역에 동적으로 추가합니다 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 뒤로가기 버튼 -->
+    <button class="back-button" onclick="goBack()">뒤로가기</button>
+
+    <script>
+        // 현재 날짜, 월, 연도를 저장하는 변수
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+
+        // HTML 요소 참조
+        const monthYear = document.getElementById('monthYear');
+        const daysContainer = document.getElementById('days');
+
+        // 월 이름 배열
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+
+        // 달력을 렌더링하는 함수
+        function renderCalendar() {
+            // 현재 월과 연도를 설정
+            monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            // 날짜 영역 초기화
+            daysContainer.innerHTML = '';
+            // 현재 월의 첫 번째 날의 요일 (0: 일요일 ~ 6: 토요일)
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+            // 현재 월의 총 일수 계산
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // 첫 주의 시작 요일까지 빈 셀 추가
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDiv = document.createElement('div');
+                daysContainer.appendChild(emptyDiv);
+            }
+
+            // 각 날짜를 달력에 추가
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+                dayDiv.textContent = day;
+
+                // 날짜 클릭 시 지정된 URL로 이동
+                const currentMonth1 = currentMonth + 1;
+                dayDiv.onclick = function () {
+                    // 타임리프 변수로 URL을 설정
+                    const url = /*[[${'/list/day'}]]*/ '/list/day';
+                    var user = "[[${user}]]";
+                    window.location.href = `${url}?year=${currentYear}&month=${currentMonth1}&day=${day}&user=${user}`;
+                };
+
+                // 현재 날짜와 일치하는 날짜에 특별한 스타일을 추가
+                if (day === currentDate.getDate() &&
+                    currentMonth === currentDate.getMonth() &&
+                    currentYear === currentDate.getFullYear()) {
+                    dayDiv.classList.add('current');
+                }
+
+                // 날짜를 달력에 추가
+                daysContainer.appendChild(dayDiv);
+            }
+        }
+
+        // 이전 달로 이동하는 함수
+        function prevMonth() {
+            // 1월에서 이전으로 가면 연도 변경
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            renderCalendar();
+        }
+
+        // 다음 달로 이동하는 함수
+        function nextMonth() {
+            // 12월에서 다음으로 가면 연도 변경
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            renderCalendar();
+        }
+
+        // 오늘 날짜로 이동하는 함수
+        function goToToday() {
+            currentDate = new Date();
+            currentMonth = currentDate.getMonth();
+            currentYear = currentDate.getFullYear();
+            renderCalendar();
+        }
+
+        // 뒤로가기 기능 함수
+        function goBack() {
+            window.history.back();
+        }
+
+        // 페이지 로드 시 달력을 처음 렌더링
+        renderCalendar();
+    </script>
+
+</body>
+
+</html>

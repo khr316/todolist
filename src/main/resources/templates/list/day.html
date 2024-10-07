@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+</head>
+
+<body>
+    <a href="/main" class="title">KHR To Do List</a>
+    <a href="/list/month">달력보기</a>
+    <div th:each="list : ${todolist}">
+        메모 : <p th:text="${list.memo}"></p>
+        날짜 : <p th:text="${list.date}"></p>
+        작성자 : <p th:text="${list.id}"></p>
+
+        <button type="button" th:onclick="alldel([[${list.seq}]])">전체삭제</button>
+    </div>
+
+    <div th:each="item : ${todoitem}">
+        <span th:id="'item-text-' + ${item.seq}" th:text="${item.item}"></span>
+
+        <input type="text" th:id="'item-input-' + ${item.seq}" th:value="${item.item}" style="display:none;" />
+
+        <button type="button" th:onclick="complete([[${item.seq}]],[[${item.com}]])" 
+        th:if="${item.com} == '0'">⭕</button>
+        <button type="button" th:onclick="complete([[${item.seq}]],[[${item.com}]])" 
+        th:unless="${item.com} == '0'">❌</button>
+        
+        <button type="button" th:onclick="edit([[${item.seq}]])" style="display:none;">수정</button>
+        <button type="button" th:id="'save-btn-' + ${item.seq}" th:onclick="save([[${item.seq}]])" style="display:none;">저장</button>
+
+        <button type="button" th:onclick="del([[${item.seq}]])">삭제</button>
+    </div>
+
+    <div>
+        <form action="/list/insert/add" method="post">
+            <input type="hidden" th:value="${todolist[0].id}" name="user">
+            <input type="hidden" th:value="${todolist[0].date}" name="date">
+            <input type="hidden" th:value="${todoitem[0].todolistSeq}" name="seq">
+            <input type="text" name="item">
+            <input type="submit" value="추가">
+        </form>
+    </div>
+
+
+</body>
+
+<script>
+    function complete(seq, com){
+        com = com === "1" ? "0" : "1";
+        var year = "[[${year}]]";
+        var month = "[[${month}]]";
+        var day = "[[${day}]]";
+        var user = "[[${user}]]";
+        const link = "/list/item?seq=" + seq + "&com=" + com + "&year=" + year + "&month=" + month + "&day=" + day + "&user=" + user;
+        location.href = link;
+    }
+
+    function del(seq){
+        var year = "[[${year}]]";
+        var month = "[[${month}]]";
+        var day = "[[${day}]]";
+        var user = "[[${user}]]";
+        const link = "/list/item/del?seq=" + seq + "&year=" + year + "&month=" + month + "&day=" + day + "&user=" + user;
+        location.href = link;
+    }
+
+    function alldel(seq){
+        const link = "/list/del?seq=" + seq;
+        location.href = link;
+    }
+
+    function edit(seq){
+        document.getElementById("item-text-" + seq).style.display = "none";
+        document.getElementById("item-input-" + seq).style.display = "inline";
+        document.getElementById("save-btn-" + seq).style.display = "inline";
+    }
+
+    function save(seq){
+        const updatedItem = document.getElementById("item-input-" + seq).value;
+        var year = "[[${year}]]";
+        var month = "[[${month}]]";
+        var day = "[[${day}]]";
+        var user = "[[${user}]]";
+        const link = "/list/item/edit?seq=" + seq + "&content=" + encodeURIComponent(updatedItem) + "&year=" + year + "&month=" + month + "&day=" + day + "&user=" + user;
+        location.href = link;
+    }
+</script>
+
+</html>
