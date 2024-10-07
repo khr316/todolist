@@ -14,16 +14,3 @@
 - **데이터베이스**: MySQL
 - **버전 관리**: Git
 
-## 프로젝트 구조
-
-```bash
-todolist/
-│
-├── public/              # 정적 파일 (HTML, 이미지 등)
-├── src/
-│   ├── components/      # React 컴포넌트
-│   ├── pages/           # 각 페이지별 파일
-│   ├── App.js           # 메인 App 컴포넌트
-│   └── index.js         # 엔트리 포인트
-├── package.json         # 프로젝트 설정 및 의존성 정보
-└── README.md            # 프로젝트 설명 파일
